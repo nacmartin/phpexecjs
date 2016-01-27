@@ -15,6 +15,9 @@ class PhpExecJs
      */
     public $context = null;
 
+    public $env = null;
+    public $timeout = false;
+
     public function __construct()
     {
         register_shutdown_function(array($this, 'removeTemporaryFiles'));
@@ -54,9 +57,57 @@ class PhpExecJs
             $command = $escapedBinary;
         }
         $command .= ' '.$sourceFile;
-        $process = new Process($command);
+
+        list($status, $stdout, $stderr) = $this->executeCommand($command);
+        return $stdout;
+    }
+
+    
+    /**
+     * Checks the process return status
+     * From Knp/Snappy (kudos)
+     *
+     * @param int    $status  The exit status code
+     * @param string $stdout  The stdout content
+     * @param string $stderr  The stderr content
+     * @param string $command The run command
+     *
+     * @throws \RuntimeException if the output file generation failed
+     */
+    protected function checkProcessStatus($status, $stdout, $stderr, $command)
+    {
+        if (0 !== $status and '' !== $stderr) {
+            throw new \RuntimeException(sprintf(
+                'The exit status code \'%s\' says something went wrong:'."\n"
+                .'stderr: "%s"'."\n"
+                .'stdout: "%s"'."\n"
+                .'command: %s.',
+                $status, $stderr, $stdout, $command
+            ));
+        }
+    }
+
+    /**
+     * Executes the given command via shell and returns the complete output as
+     * a string
+     * From Knp/Snappy (kudos)
+     *
+     * @param string $command
+     *
+     * @return array(status, stdout, stderr)
+     */
+    protected function executeCommand($command)
+    {
+        $process = new Process($command, null, $this->env);
+        if (false !== $this->timeout) {
+            $process->setTimeout($this->timeout);
+        }
         $process->run();
-        return $process->getOutput();
+        return array(
+            $process->getExitCode(),
+            $process->getOutput(),
+            $process->getErrorOutput(),
+        );
     }
 
     /**
@@ -72,6 +123,7 @@ class PhpExecJs
 
     /**
      * Removes all temporary files
+     * From Knp/Snappy (kudos)
      */
     public function removeTemporaryFiles()
     {
