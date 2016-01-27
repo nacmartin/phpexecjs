@@ -9,5 +9,10 @@
             "email": "nacho@limenius.com"
         }
     ],
+    "autoload": {
+        "psr-0": {
+            "Nacmartin\\PhpExecJs": "src/"
+        }
+    },
     "require": {}
 }
