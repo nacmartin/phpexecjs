@@ -1,0 +1,13 @@
+{
+    "name": "nacmartin/phpexecjs",
+    "description": "Run JavaScript code from PHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "nacho",
+            "email": "nacho@limenius.com"
+        }
+    ],
+    "require": {}
+}
