@@ -76,7 +76,7 @@ class PhpExecJs
     public function removeTemporaryFiles()
     {
         foreach ($this->temporaryFiles as $file) {
-            //$this->unlink($file);
+            $this->unlink($file);
         }
     }
 
