@@ -14,5 +14,7 @@
             "Nacmartin\\PhpExecJs": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "symfony/process": "^3.0"
+    }
 }
