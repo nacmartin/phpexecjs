@@ -46,8 +46,9 @@ class PhpExecJs
     public function evalJs($code)
     {
         if ($this->context) {
-            $code = $this->context."\n".$code;
+            $code = $this->context."\nreturn eval(".json_encode($code).');';
         }
+        $code = $this->embedInRunner($code);
         $sourceFile = $this->createTemporaryFile($code, 'js');
 
         $binary = '/usr/bin/env node';
@@ -59,9 +60,36 @@ class PhpExecJs
         $command .= ' '.$sourceFile;
 
         list($status, $stdout, $stderr) = $this->executeCommand($command);
-        return $stdout;
+        //TODO: needs error checking
+        return json_decode($stdout, true)[1];
     }
 
+    public function embedInRunner($code)
+    {
+        $embedded = <<<JS
+(function(program, execJS) { execJS(program) })(function(global, module, exports, require, console, setTimeout, setInterval, clearTimeout, clearInterval, setImmediate, clearImmediate) { $code;
+}, function(program) {
+  var output, print = function(string) {
+    process.stdout.write('' + string);
+  };
+  try {
+    result = program();
+    if (typeof result == 'undefined' && result !== null) {
+      print('["ok"]');
+    } else {
+      try {
+        print(JSON.stringify(['ok', result]));
+      } catch (err) {
+        print(JSON.stringify(['err', '' + err, err.stack]));
+      }
+    }
+  } catch (err) {
+    print(JSON.stringify(['err', '' + err, err.stack]));
+  }
+});
+JS;
+        return $embedded;
+    }
     
     /**
      * Checks the process return status
