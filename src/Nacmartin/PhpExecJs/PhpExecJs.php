@@ -15,12 +15,47 @@ class PhpExecJs
      */
     public $context = null;
 
+    /**
+     * env
+     * 
+     * @var array|null The environment variables or null to use the same environment as the current PHP process
+     * @access public
+     */
     public $env = null;
+
+    /**
+     * Timeout for the eval
+     * 
+     * @var bool
+     * @access public
+     */
     public $timeout = false;
 
-    public function __construct()
+    /**
+     * NodeJs binary
+     * 
+     * @var string
+     * @access private
+     */
+    private $binary;
+
+    /**
+     * Constructor
+     * 
+     * @param bool $env The environment variables or null to use the same environment as the current PHP process
+     * @access public
+     * @return void
+     */
+    public function __construct($binary = null, $env = null)
     {
+        $this->binary = $binary ? : '/usr/bin/env node';
+        $this->env = $env;
         register_shutdown_function(array($this, 'removeTemporaryFiles'));
+    }
+
+    public function __destruct()
+    {
+        $this->removeTemporaryFiles();
     }
 
     public function createContextFromFile($filename)
@@ -28,9 +63,10 @@ class PhpExecJs
         $this->createContext(file_get_contents($filename));
     }
     /**
-     * Stores code as context
+     * Stores code as context, so we can eval other JS with this context
      *
      * @param $code string
+     * @return void
      */
     public function createContext($code)
     {
@@ -40,7 +76,7 @@ class PhpExecJs
     /**
      * Evaluates JS code and returns the output
      *
-     * @param $code string
+     * @param $code string Code to evaulate
      * @returns string
      */
     public function evalJs($code)
@@ -51,19 +87,28 @@ class PhpExecJs
         $code = $this->embedInRunner($code);
         $sourceFile = $this->createTemporaryFile($code, 'js');
 
-        $binary = '/usr/bin/env node';
-        $command = $binary;
-        $escapedBinary = escapeshellarg($binary);
+        $command = $this->binary;
+        $escapedBinary = escapeshellarg($this->binary);
         if (is_executable($escapedBinary)) {
             $command = $escapedBinary;
         }
         $command .= ' '.$sourceFile;
 
         list($status, $stdout, $stderr) = $this->executeCommand($command);
-        //TODO: needs error checking
-        return json_decode($stdout, true)[1];
+        $this->checkProcessStatus($status, $stdout, $stderr, $command);
+
+        list($statusEval, $result) = json_decode($stdout, true);
+        $this->checkEvalStatus($statusEval, $result);
+        return $result;
     }
 
+    /**
+     * Embeds the code to eval in an environment that provides status of the result
+     * 
+     * @param string $code
+     * @access public
+     * @return void
+     */
     public function embedInRunner($code)
     {
         $embedded = <<<JS
@@ -90,7 +135,17 @@ class PhpExecJs
 JS;
         return $embedded;
     }
-    
+
+    /**
+     * Sets the timeout. Be aware that option only works with symfony
+     *
+     * @param integer $timeout The timeout to set
+     */
+    public function setTimeout($timeout)
+    {
+        $this->timeout = $timeout;
+    }
+
     /**
      * Checks the process return status
      * From Knp/Snappy (kudos)
@@ -111,6 +166,25 @@ JS;
                 .'stdout: "%s"'."\n"
                 .'command: %s.',
                 $status, $stderr, $stdout, $command
+            ));
+        }
+    }
+
+    /**
+     * Checks the eval return status
+     * 
+     * @param srtring $statusEval 
+     * @param string $result 
+     * @access protected
+     * @return void
+     */
+    protected function checkEvalStatus($statusEval, $result)
+    {
+        if ('ok' != $statusEval) {
+            throw new \RuntimeException(sprintf(
+                'Something went wrong evaluating JS code:'."\n"
+                .'result: "%s"',
+                $result
             ));
         }
     }
@@ -192,8 +266,4 @@ JS;
         return $filename;
     }
 
-    public function __destruct()
-    {
-        $this->removeTemporaryFiles();
-    }
 }
