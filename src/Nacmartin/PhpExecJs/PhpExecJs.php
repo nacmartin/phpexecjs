@@ -104,6 +104,18 @@ class PhpExecJs
     }
 
     /**
+     * Calls a JavaScript function against an array of arguments
+     * 
+     * @param string $function 
+     * @param array $arguments 
+     * @return string
+     */
+    public function call($function, $arguments = array())
+    {
+        return $this->evalJs($function.'.apply(this, '.json_encode($arguments).')');
+    }
+
+    /**
      * Embeds the code to eval in an environment that provides status of the result
      * 
      * @param string $code
