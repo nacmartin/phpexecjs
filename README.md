@@ -1,6 +1,6 @@
 # PhpExecJs
 
-ExecJS lets you run JavaScript code from PHP.
+PhpExecJS lets you run JavaScript code from PHP.
 
 Short example:
 
