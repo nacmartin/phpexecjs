@@ -81,8 +81,9 @@ class PhpExecJs
      */
     public function evalJs($code)
     {
+        $code = "return eval(".json_encode($code).');';
         if ($this->context) {
-            $code = $this->context."\nreturn eval(".json_encode($code).');';
+            $code = $this->context."\n".$code;
         }
         $code = $this->embedInRunner($code);
         $sourceFile = $this->createTemporaryFile($code, 'js');
