@@ -2,6 +2,19 @@
 
 ExecJS lets you run JavaScript code from PHP.
 
+Short example:
+
+    print_r($phpexecjs->evalJs("'red yellow blue'.split(' ')"));
+
+Will print:
+
+    Array
+    (
+        [0] => red
+        [1] => yellow
+        [2] => blue
+    )
+
 [![Latest Stable Version](https://poser.pugx.org/nacmartin/phpexecjs/v/stable)](https://packagist.org/packages/nacmartin/phpexecjs)
 [![Latest Unstable Version](https://poser.pugx.org/nacmartin/phpexecjs/v/unstable)](https://packagist.org/packages/nacmartin/phpexecjs)
 [![License](https://poser.pugx.org/nacmartin/phpexecjs/license)](https://packagist.org/packages/nacmartin/phpexecjs)
@@ -35,7 +48,7 @@ Will print:
 
 # Using contexts
 
-You can set up a context, like libraries and whatnot, that you want to use in your eval'd code. This is usef, for instance by the [ReactBundle](https://github.com/limenius/ReactBundle/) to render React server-side.
+You can set up a context, like libraries and whatnot, that you want to use in your eval'd code. This is used for instance by the [ReactBundle](https://github.com/limenius/ReactBundle/) to render React server-side.
 
 For instance, we can compile CoffeeScript using this feature:
 
@@ -62,7 +75,7 @@ That will print:
 
 # How it works
 
-When you run `evalJs`, the code will inserted in a small wrapper used to run JavaScript's `eval()` against your code and check the status for error handling.
+When you run `evalJs`, the code will be inserted in a small wrapper used to run JavaScript's `eval()` against your code and check the status for error handling.
 
 If you set up a context, the code will be inserted before the call to `eval()` in JavaScript.
 
