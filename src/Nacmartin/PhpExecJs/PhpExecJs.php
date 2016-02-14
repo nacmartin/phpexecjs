@@ -42,7 +42,8 @@ class PhpExecJs
     /**
      * Constructor
      * 
-     * @param bool $env The environment variables or null to use the same environment as the current PHP process
+     * @param string|null $binary The environment variables or null to use the same environment as the current PHP process
+     * @param array|null $env 
      * @access public
      * @return void
      */

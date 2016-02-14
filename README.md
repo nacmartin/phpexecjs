@@ -49,6 +49,13 @@ That will print:
     
     }).call(this);
 
+# Constructor arguments
+
+`new PhpExecJs($binary = null, $env = null);` accepts two arguments:
+
+* `binary` is a string with the command used to call node. It defaults to `/usr/bin/env node`.
+* `env` is an array with environment variables or null to use the same environment as the current PHP process.
+
 # How it works
 
 When you run `evalJs`, the code will inserted in a small wrapper used to run JavaScript's `eval()` against your code and check the status for error handling.
