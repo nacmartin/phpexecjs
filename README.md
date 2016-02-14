@@ -2,6 +2,10 @@
 
 ExecJS lets you run JavaScript code from PHP.
 
+[![Latest Stable Version](https://poser.pugx.org/nacmartin/phpexecjs/v/stable)](https://packagist.org/packages/nacmartin/phpexecjs)
+[![Latest Unstable Version](https://poser.pugx.org/nacmartin/phpexecjs/v/unstable)](https://packagist.org/packages/nacmartin/phpexecjs)
+[![License](https://poser.pugx.org/nacmartin/phpexecjs/license)](https://packagist.org/packages/nacmartin/phpexecjs)
+
 # Installation
 
     composer require nacmartin/phpexecjs
