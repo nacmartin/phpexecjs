@@ -280,4 +280,17 @@ JS;
         return $filename;
     }
 
+    /**
+     * Wrapper for the "unlink" function
+     * From Knp/Snappy (kudos)
+     *
+     * @param string $filename
+     *
+     * @return boolean
+     */
+    protected function unlink($filename)
+    {
+        return file_exists($filename) ? unlink($filename) : false;
+    }
+
 }
