@@ -15,6 +15,7 @@ Will print:
         [2] => blue
     )
 
+[![Build Status](https://travis-ci.org/nacmartin/phpexecjs.svg?branch=master)](https://travis-ci.org/nacmartin/phpexecjs)
 [![Latest Stable Version](https://poser.pugx.org/nacmartin/phpexecjs/v/stable)](https://packagist.org/packages/nacmartin/phpexecjs)
 [![Latest Unstable Version](https://poser.pugx.org/nacmartin/phpexecjs/v/unstable)](https://packagist.org/packages/nacmartin/phpexecjs)
 [![License](https://poser.pugx.org/nacmartin/phpexecjs/license)](https://packagist.org/packages/nacmartin/phpexecjs)
