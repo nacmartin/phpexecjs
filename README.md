@@ -54,18 +54,17 @@ You can set up a context, like libraries and whatnot, that you want to use in yo
 For instance, we can compile CoffeeScript using this feature:
 
     $phpexecjs->createContextFromFile("http://coffeescript.org/extras/coffee-script.js");
-    print_r($phpexecjs->call("CoffeeScript.compile", ["square = (x) -> x * x"]));
+    print_r($phpexecjs->call("CoffeeScript.compile", ["square = (x) -> x * x", ['bare' => true]]));
+
 
 That will print:
 
-    (function() {
       var square;
     
       square = function(x) {
         return x * x;
       };
     
-    }).call(this);
 
 # Constructor arguments
 
