@@ -65,6 +65,14 @@ That will print:
         return x * x;
       };
     
+You can extend this example to do things like use this function as context:
+
+    $square  = $phpexecjs->createContext($phpexecjs->call("CoffeeScript.compile", ["square = (x) -> x * x", ['bare' => true]]));
+    print_r($phpexecjs->evalJs('square(3)'));
+    
+That will print `3`.
+
+This can be used for instance, to use CoffeeScript or compile templates in JavaScript templating languages. 
 
 # Constructor arguments
 
