@@ -1,7 +1,7 @@
 <?php
 
 namespace Nacmartin\PhpExecJs;
-use Symfony\Component\Process\Process;
+
 use Nacmartin\PhpExecJs\Runtime\ExternalRuntime;
 
 class RuntimeAutodetector
