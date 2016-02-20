@@ -1,9 +1,9 @@
 <?php
 
-namespace Nacmartin\PhpExecJs\Runner;
+namespace Nacmartin\PhpExecJs\Runtime;
 use Symfony\Component\Process\Process;
 
-class ExternalRunner implements RunnerInterface
+class ExternalRuntime implements RuntimeInterface
 {
     /**
      * @var string
@@ -47,7 +47,7 @@ class ExternalRunner implements RunnerInterface
     /**
      * Constructor
      * 
-     * @param string|null $name the name of runner
+     * @param string|null $name the name of runtime
      * @param string|null $binary the name of the binary command (ex. node)
      * @param array|null $env The environment variables or null to use the same environment as the current PHP process
      * @access public
@@ -111,7 +111,7 @@ class ExternalRunner implements RunnerInterface
         if ($this->context) {
             $code = $this->context."\n".$code;
         }
-        $code = $this->embedInRunner($code);
+        $code = $this->embedInRuntime($code);
         $sourceFile = $this->createTemporaryFile($code, 'js');
 
         $command = $this->binaryPath;
@@ -144,7 +144,7 @@ class ExternalRunner implements RunnerInterface
      * @access public
      * @return void
      */
-    public function embedInRunner($code)
+    public function embedInRuntime($code)
     {
         $embedded = <<<JS
 (function(program, execJS) { execJS(program) })(function(global, module, exports, require, console, setTimeout, setInterval, clearTimeout, clearInterval, setImmediate, clearImmediate) { $code;

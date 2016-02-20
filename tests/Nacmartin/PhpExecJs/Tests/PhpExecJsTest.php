@@ -2,21 +2,21 @@
 
 namespace Nacmartin\PhpExecJs\Tests;
 use Nacmartin\PhpExecJs\PhpExecJs;
-use Nacmartin\PhpExecJs\Runner\ExternalRunner;
+use Nacmartin\PhpExecJs\Runtime\ExternalRuntime;
 
 class PhpExecJsTest extends \PHPUnit_Framework_TestCase
 {
-    public function testAutodetectRunner()
+    public function testAutodetectRuntime()
     {
         $phpExecJs = new PhpExecJs();
-        $this->assertEquals('Node.js (V8)', $phpExecJs->getRunnerName());
+        $this->assertEquals('Node.js (V8)', $phpExecJs->getRuntimeName());
     }
 
-    public function testForceRunner()
+    public function testForceRuntime()
     {
-        $runner = new ExternalRunner('foo');
-        $phpExecJs = new PhpExecJs($runner);
-        $this->assertEquals('foo', $phpExecJs->getRunnerName());
+        $runtime = new ExternalRuntime('foo');
+        $phpExecJs = new PhpExecJs($runtime);
+        $this->assertEquals('foo', $phpExecJs->getRuntimeName());
     }
 
     public function testEval()

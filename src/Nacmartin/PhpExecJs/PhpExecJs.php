@@ -1,33 +1,33 @@
 <?php
 
 namespace Nacmartin\PhpExecJs;
-use Nacmartin\PhpExecJs\Runner\RunnerInterface;
+use Nacmartin\PhpExecJs\Runtime\RuntimeInterface;
 
 class PhpExecJs
 {
     /**
      * 
      */
-    private $runner;
+    private $runtime;
 
-    public function __construct(RunnerInterface $runner = null)
+    public function __construct(RuntimeInterface $runtime = null)
     {
-        if (!$runner) {
-            $runnerAutodetector = new RunnerAutodetector();
-            $this->runner = $runnerAutodetector->autodetect();
+        if (!$runtime) {
+            $runtimeAutodetector = new RuntimeAutodetector();
+            $this->runtime = $runtimeAutodetector->autodetect();
         } else {
-            $this->runner = $runner;
+            $this->runtime = $runtime;
         }
     }
 
     /**
-     * Returns the name of the current runner
+     * Returns the name of the current runtime
      *
      * @returns string
      */
-    public function getRunnerName()
+    public function getRuntimeName()
     {
-        return $this->runner->getName();
+        return $this->runtime->getName();
     }
 
     /**
@@ -38,7 +38,7 @@ class PhpExecJs
      */
     public function evalJs($code)
     {
-        return $this->runner->evalJs($code);
+        return $this->runtime->evalJs($code);
     }
 
     /**
@@ -49,7 +49,7 @@ class PhpExecJs
      */
     public function createContext($code)
     {
-        $this->runner->createContext($code);
+        $this->runtime->createContext($code);
     }
 
     /**
@@ -72,7 +72,7 @@ class PhpExecJs
      */
     public function call($function, $arguments = array())
     {
-        return $this->runner->call($function, $arguments);
+        return $this->runtime->call($function, $arguments);
     }
 
 }

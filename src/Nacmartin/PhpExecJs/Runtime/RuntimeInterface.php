@@ -1,8 +1,8 @@
 <?php
 
-namespace Nacmartin\PhpExecJs\Runner;
+namespace Nacmartin\PhpExecJs\Runtime;
 
-interface RunnerInterface
+interface RuntimeInterface
 {
 
     /**
@@ -30,7 +30,7 @@ interface RunnerInterface
     public function isAvailable();
 
     /**
-     * Returns the name of the runner
+     * Returns the name of the runtime
      * 
      * @return string
      */

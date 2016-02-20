@@ -90,7 +90,7 @@ If you set up a context, the code will be inserted before the call to `eval()` i
 
 # Future work
 
-One of the goals of this library is to be able to choose among the available runtimes (PHPJS, node.js, Spidermonkey). Currently it only supports node.js . If you want to contribute with a runner, you are more than welcome.
+One of the goals of this library is to be able to choose among the available runtimes (PHPJS, node.js, Spidermonkey). Currently it only supports node.js . If you want to contribute with a runtime, you are more than welcome.
 
 
 # Credits
