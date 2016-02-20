@@ -1,6 +1,7 @@
 <?php
 
 namespace Nacmartin\PhpExecJs;
+
 use Nacmartin\PhpExecJs\Runtime\RuntimeInterface;
 
 class PhpExecJs
@@ -21,7 +22,7 @@ class PhpExecJs
     }
 
     /**
-     * Returns the name of the current runtime
+     * Returns the name of the current runtime.
      *
      * @returns string
      */
@@ -31,7 +32,7 @@ class PhpExecJs
     }
 
     /**
-     * Evaluates JS code and returns the output
+     * Evaluates JS code and returns the output.
      *
      * @param $code string Code to evaulate
      * @returns string
@@ -42,10 +43,9 @@ class PhpExecJs
     }
 
     /**
-     * Stores code as context, so we can eval other JS with this context
+     * Stores code as context, so we can eval other JS with this context.
      *
      * @param $code string
-     * @return void
      */
     public function createContext($code)
     {
@@ -53,10 +53,9 @@ class PhpExecJs
     }
 
     /**
-     * Creates context by reading a file
+     * Creates context by reading a file.
      *
      * @param $filename string
-     * @return void
      */
     public function createContextFromFile($filename)
     {
@@ -64,15 +63,15 @@ class PhpExecJs
     }
 
     /**
-     * Calls a JavaScript function against an array of arguments
+     * Calls a JavaScript function against an array of arguments.
      * 
-     * @param string $function 
-     * @param array $arguments 
+     * @param string $function
+     * @param array  $arguments
+     *
      * @return string
      */
     public function call($function, $arguments = array())
     {
         return $this->runtime->call($function, $arguments);
     }
-
 }

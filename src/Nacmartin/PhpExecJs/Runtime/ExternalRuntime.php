@@ -1,6 +1,7 @@
 <?php
 
 namespace Nacmartin\PhpExecJs\Runtime;
+
 use Symfony\Component\Process\Process;
 
 class ExternalRuntime implements RuntimeInterface
@@ -21,37 +22,32 @@ class ExternalRuntime implements RuntimeInterface
     public $context = null;
 
     /**
-     * env
+     * env.
      * 
      * @var array|null The environment variables or null to use the same environment as the current PHP process
-     * @access public
      */
     public $env = null;
 
     /**
-     * Timeout for the eval
+     * Timeout for the eval.
      * 
      * @var bool
-     * @access public
      */
     public $timeout = false;
 
     /**
-     * NodeJs binary
+     * NodeJs binary.
      * 
      * @var string
-     * @access private
      */
     private $binary;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param string|null $name the name of runtime
+     * @param string|null $name   the name of runtime
      * @param string|null $binary the name of the binary command (ex. node)
-     * @param array|null $env The environment variables or null to use the same environment as the current PHP process
-     * @access public
-     * @return void
+     * @param array|null  $env    The environment variables or null to use the same environment as the current PHP process
      */
     public function __construct($name, $binary = null, $env = null)
     {
@@ -82,20 +78,19 @@ class ExternalRuntime implements RuntimeInterface
                 return $binaryPath;
             }
         }
-        return null;
+
+        return;
     }
 
     public function isAvailable()
     {
-
         return $this->findBinaryPath() ? true : false;
     }
 
     /**
-     * Stores code as context, so we can eval other JS with this context
+     * Stores code as context, so we can eval other JS with this context.
      *
      * @param $code string
-     * @return void
      */
     public function createContext($code)
     {
@@ -107,7 +102,7 @@ class ExternalRuntime implements RuntimeInterface
      */
     public function evalJs($code)
     {
-        $code = "return eval(".json_encode($code).');';
+        $code = 'return eval('.json_encode($code).');';
         if ($this->context) {
             $code = $this->context."\n".$code;
         }
@@ -126,6 +121,7 @@ class ExternalRuntime implements RuntimeInterface
 
         list($statusEval, $result) = json_decode($stdout, true);
         $this->checkEvalStatus($statusEval, $result);
+
         return $result;
     }
 
@@ -138,11 +134,9 @@ class ExternalRuntime implements RuntimeInterface
     }
 
     /**
-     * Embeds the code to eval in an environment that provides status of the result
+     * Embeds the code to eval in an environment that provides status of the result.
      * 
      * @param string $code
-     * @access public
-     * @return void
      */
     public function embedInRuntime($code)
     {
@@ -168,13 +162,14 @@ class ExternalRuntime implements RuntimeInterface
   }
 });
 JS;
+
         return $embedded;
     }
 
     /**
-     * Sets the timeout. Be aware that option only works with symfony
+     * Sets the timeout. Be aware that option only works with symfony.
      *
-     * @param integer $timeout The timeout to set
+     * @param int $timeout The timeout to set
      */
     public function setTimeout($timeout)
     {
@@ -183,7 +178,7 @@ JS;
 
     /**
      * Checks the process return status
-     * From Knp/Snappy (kudos)
+     * From Knp/Snappy (kudos).
      *
      * @param int    $status  The exit status code
      * @param string $stdout  The stdout content
@@ -206,12 +201,10 @@ JS;
     }
 
     /**
-     * Checks the eval return status
+     * Checks the eval return status.
      * 
-     * @param srtring $statusEval 
-     * @param string $result 
-     * @access protected
-     * @return void
+     * @param srtring $statusEval
+     * @param string  $result
      */
     protected function checkEvalStatus($statusEval, $result)
     {
@@ -227,7 +220,7 @@ JS;
     /**
      * Executes the given command via shell and returns the complete output as
      * a string
-     * From Knp/Snappy (kudos)
+     * From Knp/Snappy (kudos).
      *
      * @param string $command
      *
@@ -240,6 +233,7 @@ JS;
             $process->setTimeout($this->timeout);
         }
         $process->run();
+
         return array(
             $process->getExitCode(),
             $process->getOutput(),
@@ -249,7 +243,7 @@ JS;
 
     /**
      * Get TemporaryFolder
-     * From Knp/Snappy (kudos)
+     * From Knp/Snappy (kudos).
      *
      * @return string
      */
@@ -260,7 +254,7 @@ JS;
 
     /**
      * Removes all temporary files
-     * From Knp/Snappy (kudos)
+     * From Knp/Snappy (kudos).
      */
     public function removeTemporaryFiles()
     {
@@ -272,13 +266,12 @@ JS;
     /**
      * Creates a temporary file.
      * The file is not created if the $content argument is null
-     * From Knp/Snappy (kudos)
+     * From Knp/Snappy (kudos).
      *
      * @param string $content   Optional content for the temporary file
      * @param string $extension An optional extension for the filename
      *
      * @return string The filename
-     *
      */
     protected function createTemporaryFile($content = null, $extension = null)
     {
@@ -290,7 +283,7 @@ JS;
         } elseif (!is_writable($dir)) {
             throw new \RuntimeException(sprintf("Unable to write in directory: %s\n", $dir));
         }
-        $filename = $dir . DIRECTORY_SEPARATOR . uniqid('nacmartin_phpexecjs', true);
+        $filename = $dir.DIRECTORY_SEPARATOR.uniqid('nacmartin_phpexecjs', true);
         if (null !== $extension) {
             $filename .= '.'.$extension;
         }
@@ -298,20 +291,20 @@ JS;
             file_put_contents($filename, $content);
         }
         $this->temporaryFiles[] = $filename;
+
         return $filename;
     }
 
     /**
      * Wrapper for the "unlink" function
-     * From Knp/Snappy (kudos)
+     * From Knp/Snappy (kudos).
      *
      * @param string $filename
      *
-     * @return boolean
+     * @return bool
      */
     protected function unlink($filename)
     {
         return file_exists($filename) ? unlink($filename) : false;
     }
-
 }

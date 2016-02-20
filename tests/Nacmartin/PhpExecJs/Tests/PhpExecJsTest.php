@@ -1,6 +1,7 @@
 <?php
 
 namespace Nacmartin\PhpExecJs\Tests;
+
 use Nacmartin\PhpExecJs\PhpExecJs;
 use Nacmartin\PhpExecJs\Runtime\ExternalRuntime;
 
