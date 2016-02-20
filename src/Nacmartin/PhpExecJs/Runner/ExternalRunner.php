@@ -56,8 +56,9 @@ class ExternalRunner implements RunnerInterface
     public function __construct($name, $binary = null, $env = null)
     {
         $this->name = $name;
-        $this->binary = $binary ? : '/usr/bin/env node';
         $this->env = $env;
+        $this->binary = $binary;
+        $this->binaryPath = $this->findBinaryPath();
         register_shutdown_function(array($this, 'removeTemporaryFiles'));
     }
 
@@ -71,18 +72,23 @@ class ExternalRunner implements RunnerInterface
         return $this->name;
     }
 
-    public function isAvailable()
+    protected function findBinaryPath()
     {
         $pathStr = getenv('PATH');
         $paths = explode(PATH_SEPARATOR, $pathStr);
         foreach ($paths as $path) {
             $binaryPath = $path.DIRECTORY_SEPARATOR.$this->binary;
             if (is_executable($path.DIRECTORY_SEPARATOR.$this->binary)) {
-                $this->binaryPath = $binaryPath;
-                return true;
+                return $binaryPath;
             }
         }
-        return false;
+        return null;
+    }
+
+    public function isAvailable()
+    {
+
+        return $this->findBinaryPath() ? true : false;
     }
 
     /**
@@ -108,8 +114,8 @@ class ExternalRunner implements RunnerInterface
         $code = $this->embedInRunner($code);
         $sourceFile = $this->createTemporaryFile($code, 'js');
 
-        $command = $this->binary;
-        $escapedBinary = escapeshellarg($this->binary);
+        $command = $this->binaryPath;
+        $escapedBinary = escapeshellarg($this->binaryPath);
         if (is_executable($escapedBinary)) {
             $command = $escapedBinary;
         }
@@ -128,7 +134,6 @@ class ExternalRunner implements RunnerInterface
      */
     public function call($function, $arguments = array())
     {
-        print_r($this->context);
         return $this->evalJs($function.'.apply(this, '.json_encode($arguments).')');
     }
 
