@@ -2,7 +2,7 @@
 
 namespace Nacmartin\PhpExecJs;
 use Symfony\Component\Process\Process;
-use Nacmartin\PhpExecJs\Runtime;
+use Nacmartin\PhpExecJs\Runtime\ExternalRuntime;
 
 class RuntimeAutodetector
 {
@@ -10,7 +10,7 @@ class RuntimeAutodetector
 
     public function __construct()
     {
-        $this->runtimes[] = new Runtime\ExternalRuntime('Node.js (V8)', 'node');
+        $this->runtimes[] = new ExternalRuntime('Node.js (V8)', 'node');
     }
 
     public function autodetect()
