@@ -75,23 +75,32 @@ That will print `9`.
 
 This can be used for instance, to use CoffeeScript or compile templates in JavaScript templating languages. 
 
-# Constructor arguments
-
-`new PhpExecJs($binary = null, $env = null);` accepts two arguments:
-
-* `binary` is a string with the command used to call node. It defaults to `/usr/bin/env node`.
-* `env` is an array with environment variables or null to use the same environment as the current PHP process.
-
 # How it works
 
-When you run `evalJs`, the code will be inserted in a small wrapper used to run JavaScript's `eval()` against your code and check the status for error handling.
+When you run `evalJs`, the code will be inserted into a small wrapper used to run JavaScript's `eval()` against your code and check the status for error handling.
 
-If you set up a context, the code will be inserted before the call to `eval()` in JavaScript.
+If you set up a context, the code will be inserted before the call to `eval()` in JavaScript, and if you have [the V8Js extension](https://github.com/phpv8/v8js) installed, it will precompile it.
 
-# Future work
+# Runtimes supported
 
-One of the goals of this library is to be able to choose among the available runtimes (PHPJS, node.js, Spidermonkey). Currently it only supports node.js . If you want to contribute with a runtime, you are more than welcome.
+By default, PhPExecjs will auto-detect the best runtime available. Currently, the routines supported are:
 
+* [V8Js (PHP extension)](https://github.com/phpv8/v8js)
+* node.js
+
+It is recommended to have V8Js installed, but you may want to have it installed in production and still be able to use PhpExecJs calling node as a subprocess during development, so you don't need to install the extension.
+
+## Adding a external runtime
+
+If you have a external runner (let's say, Spidermonkey), and you want to use it, pass it to the constructor:
+
+
+    $myRuntime = new ExternalRuntime('My runtime name', 'my_command');
+    $phpExecJs = new PhpExecJs($myRuntime);
+
+## Contributing with runtimes
+
+We would like to support more runtimes (Duktape, for instance). If you want to contribute with a runtime, it is pretty simple. You just have to implement `src/Runtimes/RuntimeInterface`. Check the directory `src/Runtimes` for examples.
 
 # Credits
 
