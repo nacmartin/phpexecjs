@@ -17,7 +17,9 @@ class V8jsRuntime implements RuntimeInterface
 
     public function __construct()
     {
-        $this->v8 = new \V8Js();
+        if ($this->isAvailable()) {
+            $this->v8 = new \V8Js();
+        }
     }
 
     /**
