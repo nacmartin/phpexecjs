@@ -10,7 +10,11 @@ class PhpExecJsTest extends \PHPUnit_Framework_TestCase
     public function testAutodetectRuntime()
     {
         $phpExecJs = new PhpExecJs();
-        $this->assertEquals('Node.js (V8)', $phpExecJs->getRuntimeName());
+        if (extension_loaded('v8js')) {
+            $this->assertEquals('V8js PHP Extension (V8)', $phpExecJs->getRuntimeName());
+        } else {
+            $this->assertEquals('Node.js (V8)', $phpExecJs->getRuntimeName());
+        }
     }
 
     public function testForceRuntime()

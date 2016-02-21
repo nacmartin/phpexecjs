@@ -68,34 +68,11 @@ class ExternalRuntime implements RuntimeInterface
         return $this->name;
     }
 
-    protected function findBinaryPath()
-    {
-        $pathStr = getenv('PATH');
-        $paths = explode(PATH_SEPARATOR, $pathStr);
-        foreach ($paths as $path) {
-            $binaryPath = $path.DIRECTORY_SEPARATOR.$this->binary;
-            if (is_executable($path.DIRECTORY_SEPARATOR.$this->binary)) {
-                return $binaryPath;
-            }
-        }
-
-        return;
-    }
-
     public function isAvailable()
     {
         return $this->findBinaryPath() ? true : false;
     }
 
-    /**
-     * Stores code as context, so we can eval other JS with this context.
-     *
-     * @param $code string
-     */
-    public function createContext($code)
-    {
-        $this->context = $code;
-    }
 
     /**
      * {@inheritdoc}
@@ -176,70 +153,6 @@ JS;
         $this->timeout = $timeout;
     }
 
-    /**
-     * Checks the process return status
-     * From Knp/Snappy (kudos).
-     *
-     * @param int    $status  The exit status code
-     * @param string $stdout  The stdout content
-     * @param string $stderr  The stderr content
-     * @param string $command The run command
-     *
-     * @throws \RuntimeException if the output file generation failed
-     */
-    protected function checkProcessStatus($status, $stdout, $stderr, $command)
-    {
-        if (0 !== $status and '' !== $stderr) {
-            throw new \RuntimeException(sprintf(
-                'The exit status code \'%s\' says something went wrong:'."\n"
-                .'stderr: "%s"'."\n"
-                .'stdout: "%s"'."\n"
-                .'command: %s.',
-                $status, $stderr, $stdout, $command
-            ));
-        }
-    }
-
-    /**
-     * Checks the eval return status.
-     * 
-     * @param srtring $statusEval
-     * @param string  $result
-     */
-    protected function checkEvalStatus($statusEval, $result)
-    {
-        if ('ok' != $statusEval) {
-            throw new \RuntimeException(sprintf(
-                'Something went wrong evaluating JS code:'."\n"
-                .'result: "%s"',
-                $result
-            ));
-        }
-    }
-
-    /**
-     * Executes the given command via shell and returns the complete output as
-     * a string
-     * From Knp/Snappy (kudos).
-     *
-     * @param string $command
-     *
-     * @return array(status, stdout, stderr)
-     */
-    protected function executeCommand($command)
-    {
-        $process = new Process($command, null, $this->env);
-        if (false !== $this->timeout) {
-            $process->setTimeout($this->timeout);
-        }
-        $process->run();
-
-        return array(
-            $process->getExitCode(),
-            $process->getOutput(),
-            $process->getErrorOutput(),
-        );
-    }
 
     /**
      * Get TemporaryFolder
@@ -306,5 +219,92 @@ JS;
     protected function unlink($filename)
     {
         return file_exists($filename) ? unlink($filename) : false;
+    }
+
+    protected function findBinaryPath()
+    {
+        $pathStr = getenv('PATH');
+        $paths = explode(PATH_SEPARATOR, $pathStr);
+        foreach ($paths as $path) {
+            $binaryPath = $path.DIRECTORY_SEPARATOR.$this->binary;
+            if (is_executable($path.DIRECTORY_SEPARATOR.$this->binary)) {
+                return $binaryPath;
+            }
+        }
+
+        return;
+    }
+
+    /**
+     * Checks the process return status
+     * From Knp/Snappy (kudos).
+     *
+     * @param int    $status  The exit status code
+     * @param string $stdout  The stdout content
+     * @param string $stderr  The stderr content
+     * @param string $command The run command
+     *
+     * @throws \RuntimeException if the output file generation failed
+     */
+    protected function checkProcessStatus($status, $stdout, $stderr, $command)
+    {
+        if (0 !== $status and '' !== $stderr) {
+            throw new \RuntimeException(sprintf(
+                'The exit status code \'%s\' says something went wrong:'."\n"
+                .'stderr: "%s"'."\n"
+                .'stdout: "%s"'."\n"
+                .'command: %s.',
+                $status, $stderr, $stdout, $command
+            ));
+        }
+    }
+
+    /**
+     * Checks the eval return status.
+     * 
+     * @param srtring $statusEval
+     * @param string  $result
+     */
+    protected function checkEvalStatus($statusEval, $result)
+    {
+        if ('ok' != $statusEval) {
+            throw new \RuntimeException(sprintf(
+                'Something went wrong evaluating JS code:'."\n"
+                .'result: "%s"',
+                $result
+            ));
+        }
+    }
+
+    /**
+     * Executes the given command via shell and returns the complete output as
+     * a string
+     * From Knp/Snappy (kudos).
+     *
+     * @param string $command
+     *
+     * @return array(status, stdout, stderr)
+     */
+    protected function executeCommand($command)
+    {
+        $process = new Process($command, null, $this->env);
+        if (false !== $this->timeout) {
+            $process->setTimeout($this->timeout);
+        }
+        $process->run();
+
+        return array(
+            $process->getExitCode(),
+            $process->getOutput(),
+            $process->getErrorOutput(),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createContext($code)
+    {
+        $this->context = $code;
     }
 }

@@ -20,7 +20,7 @@ interface RuntimeInterface
      *
      * @return string
      */
-    public function call($code);
+    public function call($function, $arguments);
 
     /**
      * Checks if the runtime is available.
@@ -42,4 +42,5 @@ interface RuntimeInterface
      * @param $code string
      */
     public function createContext($code);
+
 }

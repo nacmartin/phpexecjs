@@ -7,10 +7,18 @@ use Nacmartin\PhpExecJs\Runtime\RuntimeInterface;
 class PhpExecJs
 {
     /**
-     * 
+     * @var RuntimeInterface|null
      */
     private $runtime;
 
+    /**
+     * Constructor. A runtime can be passed as argument
+     * otherwise we will autodetect
+     *
+     * @param RuntimeInterface|null $runtime
+     * @access public
+     * @return void
+     */
     public function __construct(RuntimeInterface $runtime = null)
     {
         if (!$runtime) {
@@ -43,16 +51,6 @@ class PhpExecJs
     }
 
     /**
-     * Stores code as context, so we can eval other JS with this context.
-     *
-     * @param $code string
-     */
-    public function createContext($code)
-    {
-        $this->runtime->createContext($code);
-    }
-
-    /**
      * Creates context by reading a file.
      *
      * @param $filename string
@@ -73,5 +71,15 @@ class PhpExecJs
     public function call($function, $arguments = array())
     {
         return $this->runtime->call($function, $arguments);
+    }
+
+    /**
+     * Stores code as context, so we can eval other JS with this context.
+     *
+     * @param $code string
+     */
+    public function createContext($code)
+    {
+        $this->runtime->createContext($code);
     }
 }
