@@ -229,6 +229,9 @@ JS;
                 return $binaryPath;
             }
         }
+        if ($wichBinaryPath = exec('which '.$this->binary)) {
+            return $wichBinaryPath;
+        }
 
         return;
     }
