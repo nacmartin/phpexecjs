@@ -42,5 +42,4 @@ interface RuntimeInterface
      * @param $code string
      */
     public function createContext($code);
-
 }

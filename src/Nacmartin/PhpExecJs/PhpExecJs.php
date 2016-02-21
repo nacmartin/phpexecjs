@@ -13,11 +13,9 @@ class PhpExecJs
 
     /**
      * Constructor. A runtime can be passed as argument
-     * otherwise we will autodetect
+     * otherwise we will autodetect.
      *
      * @param RuntimeInterface|null $runtime
-     * @access public
-     * @return void
      */
     public function __construct(RuntimeInterface $runtime = null)
     {

@@ -73,7 +73,6 @@ class ExternalRuntime implements RuntimeInterface
         return $this->findBinaryPath() ? true : false;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -152,7 +151,6 @@ JS;
     {
         $this->timeout = $timeout;
     }
-
 
     /**
      * Get TemporaryFolder

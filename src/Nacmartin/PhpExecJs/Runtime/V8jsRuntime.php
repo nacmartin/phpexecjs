@@ -6,7 +6,6 @@ class V8jsRuntime implements RuntimeInterface
 {
     /**
      * @var \V8Js
-     * @access private
      */
     private $v8;
 
@@ -51,7 +50,7 @@ class V8jsRuntime implements RuntimeInterface
      */
     public function getName()
     {
-        return "V8js PHP Extension (V8)";
+        return 'V8js PHP Extension (V8)';
     }
 
     /**
@@ -62,5 +61,4 @@ class V8jsRuntime implements RuntimeInterface
         $this->context = $this->v8->compileString($code);
         $this->v8->executeScript($this->context);
     }
-
 }
