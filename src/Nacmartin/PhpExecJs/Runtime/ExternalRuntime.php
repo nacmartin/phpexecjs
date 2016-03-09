@@ -23,28 +23,28 @@ class ExternalRuntime implements RuntimeInterface
 
     /**
      * env.
-     * 
+     *
      * @var array|null The environment variables or null to use the same environment as the current PHP process
      */
     public $env = null;
 
     /**
      * Timeout for the eval.
-     * 
+     *
      * @var bool
      */
     public $timeout = false;
 
     /**
      * NodeJs binary.
-     * 
+     *
      * @var array
      */
     private $binary;
 
     /**
      * Constructor.
-     * 
+     *
      * @param string|null $name   the name of runtime
      * @param array|array() $binary the name of the binary command (ex. node)
      * @param array|null  $env    The environment variables or null to use the same environment as the current PHP process
@@ -111,7 +111,7 @@ class ExternalRuntime implements RuntimeInterface
 
     /**
      * Embeds the code to eval in an environment that provides status of the result.
-     * 
+     *
      * @param string $code
      */
     public function embedInRuntime($code)
@@ -231,7 +231,7 @@ JS;
                 }
             }
         }
-        
+
         foreach ($this->binary as $binary) {
             if ($wichBinaryPath = exec('which '.$binary)) {
                 return $wichBinaryPath;

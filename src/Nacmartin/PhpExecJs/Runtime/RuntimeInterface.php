@@ -14,7 +14,7 @@ interface RuntimeInterface
 
     /**
      * Calls a JavaScript function against an array of arguments.
-     * 
+     *
      * @param string $function
      * @param array  $arguments
      *
@@ -24,7 +24,7 @@ interface RuntimeInterface
 
     /**
      * Checks if the runtime is available.
-     * 
+     *
      * @return bool
      */
     public function isAvailable();

@@ -60,7 +60,7 @@ class PhpExecJs
 
     /**
      * Calls a JavaScript function against an array of arguments.
-     *    
+     * 
      * @param string $function
      * @param array  $arguments
      *
