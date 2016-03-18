@@ -14,8 +14,7 @@ class RuntimeAutodetector
         // Runners will be checked for availabilty by order in array so order
         // matters
         $this->runtimes[] = new V8jsRuntime('V8js PHP Extension (V8)');
-        $this->runtimes[] = new ExternalRuntime('Node.js (V8)', 'node');
-        $this->runtimes[] = new ExternalRuntime('Node.js (V8)', 'nodejs');
+        $this->runtimes[] = new ExternalRuntime('Node.js (V8)', ['node', 'nodejs']);
     }
 
     public function autodetect()
