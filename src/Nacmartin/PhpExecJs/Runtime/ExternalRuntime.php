@@ -38,7 +38,7 @@ class ExternalRuntime implements RuntimeInterface
     /**
      * NodeJs binary.
      * 
-     * @var string
+     * @var array
      */
     private $binary;
 
@@ -46,10 +46,10 @@ class ExternalRuntime implements RuntimeInterface
      * Constructor.
      * 
      * @param string|null $name   the name of runtime
-     * @param string|null $binary the name of the binary command (ex. node)
+     * @param array|array() $binary the name of the binary command (ex. node)
      * @param array|null  $env    The environment variables or null to use the same environment as the current PHP process
      */
-    public function __construct($name, $binary = null, $env = null)
+    public function __construct($name, $binary = array(), $env = null)
     {
         $this->name = $name;
         $this->env = $env;
@@ -224,13 +224,18 @@ JS;
         $pathStr = getenv('PATH');
         $paths = explode(PATH_SEPARATOR, $pathStr);
         foreach ($paths as $path) {
-            $binaryPath = $path.DIRECTORY_SEPARATOR.$this->binary;
-            if (is_executable($path.DIRECTORY_SEPARATOR.$this->binary)) {
-                return $binaryPath;
+            foreach ($this->binary as $binary) {
+                $binaryPath = $path.DIRECTORY_SEPARATOR.$binary;
+                if (is_executable($path.DIRECTORY_SEPARATOR.$binary)) {
+                    return $binaryPath;
+                }
             }
         }
-        if ($wichBinaryPath = exec('which '.$this->binary)) {
-            return $wichBinaryPath;
+        
+        foreach ($this->binary as $binary) {
+            if ($wichBinaryPath = exec('which '.$binary)) {
+                return $wichBinaryPath;
+            }
         }
 
         return;
