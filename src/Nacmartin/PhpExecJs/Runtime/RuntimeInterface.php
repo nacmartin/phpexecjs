@@ -31,7 +31,7 @@ interface RuntimeInterface
 
     /**
      * Returns the name of the runtime.
-     * 
+     *
      * @return string
      */
     public function getName();
