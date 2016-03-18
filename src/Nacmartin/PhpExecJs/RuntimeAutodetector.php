@@ -15,6 +15,7 @@ class RuntimeAutodetector
         // matters
         $this->runtimes[] = new V8jsRuntime('V8js PHP Extension (V8)');
         $this->runtimes[] = new ExternalRuntime('Node.js (V8)', 'node');
+        $this->runtimes[] = new ExternalRuntime('Node.js (V8)', 'nodejs');
     }
 
     public function autodetect()
