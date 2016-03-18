@@ -45,9 +45,9 @@ class ExternalRuntime implements RuntimeInterface
     /**
      * Constructor.
      *
-     * @param string|null $name   the name of runtime
+     * @param string|null   $name   the name of runtime
      * @param array|array() $binary the name of the binary command (ex. node)
-     * @param array|null $env    The environment variables or null to use the same environment as the current PHP process
+     * @param array|null    $env    The environment variables or null to use the same environment as the current PHP process
      */
     public function __construct($name, $binary = array(), $env = null)
     {
