@@ -226,8 +226,12 @@ JS;
         foreach ($paths as $path) {
             foreach ($this->binary as $binary) {
                 $binaryPath = $path.DIRECTORY_SEPARATOR.$binary;
+                $binaryPathSlash = $path.$binary;
                 if (is_executable($path.DIRECTORY_SEPARATOR.$binary)) {
-                    return $binaryPath;
+                    return escapeshellarg($binaryPath);
+                }
+                elseif(is_executable($path.DIRECTORY_SEPARATOR.$binaryPathSlash)) {
+                    return escapeshellarg($binaryPath);
                 }
             }
         }
