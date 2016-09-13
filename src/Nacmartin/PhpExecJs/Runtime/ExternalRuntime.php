@@ -226,8 +226,14 @@ JS;
         foreach ($paths as $path) {
             foreach ($this->binary as $binary) {
                 $binaryPath = $path.DIRECTORY_SEPARATOR.$binary;
-                if (is_executable($path.DIRECTORY_SEPARATOR.$binary)) {
+                if (is_executable($binaryPath)) {
                     return $binaryPath;
+                }
+                if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+                    $binaryPath = $binaryPath.'.exe';
+                    if (is_executable($binaryPath)) {
+                        return $binaryPath;
+                    }
                 }
             }
         }
