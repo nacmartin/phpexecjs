@@ -229,7 +229,7 @@ JS;
                 if (is_executable($binaryPath)) {
                     return $binaryPath;
                 }
-                if (defined('PHP_WINDOWS_VERSION_MAJOR')) {
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                     $binaryPath = $binaryPath.'.exe';
                     if (is_executable($binaryPath)) {
                         return $binaryPath;
