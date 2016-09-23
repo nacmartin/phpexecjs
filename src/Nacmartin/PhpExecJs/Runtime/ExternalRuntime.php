@@ -86,6 +86,9 @@ class ExternalRuntime implements RuntimeInterface
         $sourceFile = $this->createTemporaryFile($code, 'js');
 
         $command = $this->binaryPath;
+        if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
+            $command = '"'.$this->binaryPath.'"'; // wrap the command in double quotes http://stackoverflow.com/a/36494732/5359860
+        }
         $escapedBinary = escapeshellarg($this->binaryPath);
         if (is_executable($escapedBinary)) {
             $command = $escapedBinary;
