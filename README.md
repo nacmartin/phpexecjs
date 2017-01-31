@@ -28,14 +28,16 @@ Sample program
 
 # Usage
 
-    <?php
+```php
+<?php
     require __DIR__ . '/../vendor/autoload.php';
     
     use Nacmartin\PhpExecJs\PhpExecJs;
     
     $phpexecjs = new PhpExecJs();
     
-    print_r($phpexecjs->evalJs("'red yellow blue'.split(' ')"));
+    print_r($phpexecjs->evalJs("'red yellow blue'.split(' ')"));
+```
 
 Will print:
 
@@ -53,6 +55,7 @@ You can set up a context, like libraries and whatnot, that you want to use in yo
 
 For instance, we can compile CoffeeScript using this feature:
 
+```php
     $phpexecjs->createContextFromFile("http://coffeescript.org/extras/coffee-script.js");
     print_r($phpexecjs->call("CoffeeScript.compile", ["square = (x) -> x * x", ['bare' => true]]));
 
@@ -64,12 +67,15 @@ That will print:
       square = function(x) {
         return x * x;
       };
+```      
     
 You can extend this example to do things like use this function as context:
 
+```php
     $square = $phpexecjs->call("CoffeeScript.compile", ["square = (x) -> x * x", ['bare' => true]]);
     $phpexecjs->createContext($square);
     print_r($phpexecjs->evalJs('square(3)'));
+```    
     
 That will print `9`.
 
@@ -94,9 +100,10 @@ It is recommended to have V8Js installed, but you may want to have it installed 
 
 If you have a external runner (let's say, Spidermonkey), and you want to use it, pass it to the constructor:
 
-
+```php
     $myRuntime = new ExternalRuntime('My runtime name', 'my_command');
     $phpExecJs = new PhpExecJs($myRuntime);
+```    
 
 ## Contributing with runtimes
 
