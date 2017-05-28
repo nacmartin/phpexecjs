@@ -109,6 +109,12 @@ If you have a external runner (let's say, Spidermonkey), and you want to use it,
 
 We would like to support more runtimes (Duktape, for instance). If you want to contribute with a runtime, it is pretty simple. You just have to implement `src/Runtimes/RuntimeInterface`. Check the directory `src/Runtimes` for examples.
 
+## Why cannot I use some functions like `setTimeout`?
+
+PhpExecJs provides a common denominator interface to JavaScript runtimes, so it can only run code that is agnostic about the interpreter. Thus, some features are disabled. Notably, timer functions are disabled because not all runtimes guarantee a full JavaScript event loop. If you want to use any of these please use directly node.js instead of this higher level library:
+
+`global`, `module`, `exports`, `require`, `console`, `setTimeout`, `setInterval`, `clearTimeout`, `clearInterval`, `setImmediate`, `clearImmediate`
+
 # Credits
 
 This library is inspired in [ExecJs](https://github.com/rails/execjs), A Ruby library.
