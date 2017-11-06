@@ -5,7 +5,7 @@ namespace Nacmartin\PhpExecJs\Tests;
 use Nacmartin\PhpExecJs\PhpExecJs;
 use Nacmartin\PhpExecJs\Runtime\ExternalRuntime;
 
-class PhpExecJsTest extends \PHPUnit_Framework_TestCase
+class PhpExecJsTest extends \PHPUnit\Framework\TestCase
 {
     public function testAutodetectRuntime()
     {
