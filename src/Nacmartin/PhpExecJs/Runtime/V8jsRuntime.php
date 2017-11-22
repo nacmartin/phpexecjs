@@ -9,6 +9,8 @@ class V8jsRuntime implements RuntimeInterface
      */
     private $v8;
 
+    private $cache = null;
+
     /**
      * @var resource Our compiled context
      */
@@ -42,6 +44,7 @@ class V8jsRuntime implements RuntimeInterface
      */
     public function isAvailable()
     {
+
         return extension_loaded('v8js');
     }
 
@@ -56,9 +59,30 @@ class V8jsRuntime implements RuntimeInterface
     /**
      * {@inheritdoc}
      */
-    public function createContext($code)
+    public function createContext($code, $cachename = null)
     {
-        $this->context = $this->v8->compileString($code);
-        $this->v8->executeScript($this->context);
+        if ($cachename) {
+            $cacheItem = $this->cache->getItem($cachename);
+            if ($cacheItem->isHit()) {
+                $snapshot = $cacheItem->get();
+            } else {
+                $snapshot = \V8Js::createSnapshot($code);
+                $cacheItem->set($snapshot);
+                $this->cache->save($cacheItem);
+            }
+        } else {
+            $snapshot = \V8Js::createSnapshot($code);
+        }
+        $this->v8 = new \V8Js('PHP', [], [], true, $snapshot);
+    }
+
+    public function supportsCache()
+    {
+        return true;
+    }
+
+    public function setCache($cache)
+    {
+        $this->cache = $cache;
     }
 }

@@ -318,8 +318,24 @@ JS;
     /**
      * {@inheritdoc}
      */
-    public function createContext($code)
+    public function createContext($code, $cacheName = null)
     {
         $this->context = $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsCache()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCache($cache)
+    {
+        throw new \Exception("External runtime (node.js) doesn't support cache. You may try installing v8JS php extension so it is used instead of this one.");
     }
 }
