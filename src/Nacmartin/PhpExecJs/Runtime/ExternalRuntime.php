@@ -302,7 +302,14 @@ JS;
      */
     protected function executeCommand($command)
     {
-        $process = new Process($command, null, $this->env);
+        if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandLine')) {
+            // Symfony 4.2+
+            $process = Process::fromShellCommandline($command, null, $this->env);
+        } else {
+            // Older versions
+            $process = new Process($command, null, $this->env);
+        }
+
         if (false !== $this->timeout) {
             $process->setTimeout($this->timeout);
         }
