@@ -76,8 +76,28 @@ class PhpExecJs
      *
      * @param $code string
      */
-    public function createContext($code)
+    public function createContext($code, $cachename = null)
     {
-        $this->runtime->createContext($code);
+        $this->runtime->createContext($code, $cachename);
+    }
+
+    /**
+     * Supports cache, so we can get a snapshot from the cache
+     *
+     * @param $code string
+     */
+    public function supportsCache()
+    {
+        return $this->runtime->supportsCache();
+    }
+
+    /**
+     * Set the cache
+     *
+     * @param $code string
+     */
+    public function setCache($cache)
+    {
+        return $this->runtime->setCache($cache);
     }
 }

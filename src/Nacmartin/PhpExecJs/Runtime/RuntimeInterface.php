@@ -41,5 +41,15 @@ interface RuntimeInterface
      *
      * @param $code string
      */
-    public function createContext($code);
+    public function createContext($code, $cachename = null);
+
+    /**
+     * Does this runtime support creating a snapshot?.
+     */
+    public function supportsCache();
+
+    /**
+     * Set the PSR-6 cache mechanism
+     */
+    public function setCache($cache);
 }

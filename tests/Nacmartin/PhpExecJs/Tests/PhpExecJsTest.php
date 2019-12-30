@@ -4,8 +4,9 @@ namespace Nacmartin\PhpExecJs\Tests;
 
 use Nacmartin\PhpExecJs\PhpExecJs;
 use Nacmartin\PhpExecJs\Runtime\ExternalRuntime;
+use PHPUnit\Framework\TestCase;
 
-class PhpExecJsTest extends \PHPUnit\Framework\TestCase
+class PhpExecJsTest extends TestCase
 {
     public function testAutodetectRuntime()
     {
@@ -46,11 +47,10 @@ class PhpExecJsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(3, $phpExecJs->call('sum', [1, 2]));
     }
 
-    /**
-     * @expectedException RuntimeException
-     */
     public function testError()
     {
+        $this->expectException('\RuntimeException');
+
         $phpExecJs = new PhpExecJs();
         $phpExecJs->call('something', [1, 2]);
     }
