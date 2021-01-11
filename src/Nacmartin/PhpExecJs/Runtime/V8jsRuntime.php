@@ -73,6 +73,7 @@ class V8jsRuntime implements RuntimeInterface
         } else {
             $snapshot = \V8Js::createSnapshot($code);
         }
+        $this->v8 = null;
         $this->v8 = new \V8Js('PHP', [], [], true, $snapshot);
     }
 
