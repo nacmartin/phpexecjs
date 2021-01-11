@@ -7,6 +7,10 @@
         {
             "name": "nacho",
             "email": "nacho@limenius.com"
+        },
+        {
+            "name": "Farit",
+            "email": "function.best@gmail.com"
         }
     ],
     "autoload": {
