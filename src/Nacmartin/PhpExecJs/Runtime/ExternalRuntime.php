@@ -120,7 +120,7 @@ class ExternalRuntime implements RuntimeInterface
     public function embedInRuntime($code)
     {
         $embedded = <<<JS
-(function(program, execJS) { execJS(program) })(function(global, module, exports, require, console, setTimeout, setInterval, clearTimeout, clearInterval, setImmediate, clearImmediate) { $code;
+(function(program, execJS) { execJS(program) })(function(global, module, exports, require, console, setTimeout, setInterval, clearTimeout, clearInterval,  clearImmediate) { $code;
 }, function(program) {
   var output, print = function(string) {
     process.stdout.write('' + string);
